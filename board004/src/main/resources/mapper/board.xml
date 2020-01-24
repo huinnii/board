@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.BoardDao">
+    <insert id="insertBoard">
+        insert into board(title, writer, content,passward)
+        values(#{title},#{writer},#{content},#{passward})
+    </insert>
+    <update id="updateBoard">
+        update board set title=#{title},content=#{content} where idx=#{idx}
+    </update>
+    <delete id="deleteBoard">
+        delete board where idx=#{idx}
+    </delete>
+    <select id="getBoard" resultType="com.example.demo.model.BoardModel">
+        select * from board where state="Y" order by idx desc
+    </select>
+    <select id="getDetail" resultType="com.example.demo.model.BoardModel">
+        select * from board where idx=#{idx} and state="Y" order by idx desc
+    </select>
+</mapper>
