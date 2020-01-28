@@ -1,9 +1,9 @@
 ## README.md
 
-This is an board04
+This is a board04
 ===============
 
-This is an simple board project
+This is a simple board project
 ------------------------
 
 1. boardList
