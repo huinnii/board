@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-         pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,23 +9,23 @@
         <title>List</title>
     </head>
 
-    <h2> °Ô½Ã±Û ¸ñ·Ï </h2>
+    <h2> ê²Œì‹œê¸€ ëª©ë¡ </h2>
     <body>
         <table border="2">
             <thead>
             <tr>
-                <th>¹øÈ£</th>
-                <th>Á¦¸ñ</th>
-                <th>±Û¾´ÀÌ</th>
-                <th>Á¶È¸¼ö</th>
-                <th>¼öÁ¤ÀÏ</th>
+                <th>ë²ˆí˜¸</th>
+                <th>ì œëª©</th>
+                <th>ê¸€ì“´ì´</th>
+                <th>ì¡°íšŒìˆ˜</th>
+                <th>ìˆ˜ì •ì¼</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${boardList}" var = "board">
                 <tr>
                     <td>${board.idx}</td>
-                    <td><a href = "/read/${board.idx}">${board.title}</a></td>
+                    <td><a href = "/detail/${board.idx}">${board.title}</a></td>
                     <td>${board.writer}</td>
                     <td>${board.hit}</td>
                     <td>${board.moddate}</td>
@@ -33,6 +33,6 @@
             </c:forEach>
             </tbody>
         </table>
-    <a href = "/insert">±Û µî·Ï</a>
+    <a href = "/addBoard">ê¸€ ë“±ë¡</a>
     </body>
 </html>

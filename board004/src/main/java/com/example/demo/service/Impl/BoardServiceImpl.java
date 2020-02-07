@@ -19,10 +19,28 @@ public class BoardServiceImpl implements BoardService {
         List<BoardModel> board = dao.getBoard();
         return board;
     }
-
+    @Override
+    public void insertBoard(BoardModel board){
+        dao.setBoard(board);
+    }
     @Override
     public BoardModel printDetail(int idx){
         BoardModel board = dao.getDetail(idx);
         return board;
     }
+    @Override
+    public void deleteBoard(int idx){
+        dao.deleteBoard(idx);
+    }
+    @Override
+    public void updateBoard(BoardModel board)
+    {
+        dao.updateBoard(board);
+    }
+    @Override
+    public void hitBoard(int idx)
+    {
+        dao.hitBoard(idx);
+    }
+
 }

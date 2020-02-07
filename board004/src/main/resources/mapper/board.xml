@@ -2,20 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.dao.BoardDao">
-    <insert id="insertBoard">
-        insert into board(title, writer, content,passward)
-        values(#{title},#{writer},#{content},#{passward})
+    <insert id="setBoard" parameterType="com.example.demo.model.BoardModel">
+        insert into board(title, writer, content,password)
+        values(#{title},#{writer},#{content},#{password})
     </insert>
-    <update id="updateBoard">
-        update board set title=#{title},content=#{content} where idx=#{idx}
+    <update id="updateBoard" parameterType="map">
+        update board
+        <set>
+            <if test="title !=null and title !=''">title=#{title},</if>
+            <if test="writer !=null and writer !=''">writer=#{writer},</if>
+            content=#{content},password=#{password},
+            moddate=#{moddate}
+            where idx=#{idx}
+        </set>
     </update>
     <delete id="deleteBoard">
-        delete board where idx=#{idx}
+        update board set state="N" where idx=#{idx}
     </delete>
     <select id="getBoard" resultType="com.example.demo.model.BoardModel">
         select * from board where state="Y" order by idx desc
     </select>
-    <select id="getDetail" resultType="com.example.demo.model.BoardModel">
+    <select id="getDetail" parameterType="int" resultType="com.example.demo.model.BoardModel">
         select * from board where idx=#{idx} and state="Y" order by idx desc
     </select>
+    <update id="hitBoard" parameterType="int">
+        update board set hit=hit+1 where idx=#{idx}
+    </update>
 </mapper>
