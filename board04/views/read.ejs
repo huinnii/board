@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%
+    var read = rows[0];
+    %>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        function doDisplay(){
+            var con = document.getElementById("myDIV");
+            if(con.style.display=='none'){
+                con.style.display = 'block';
+            }else{
+                con.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+
+<body>
+<h1><%= title %></h1>
+
+<table border="2">
+    <tr>
+        <td colspan="10">
+            <a href="/board/list"> 목록 </a>
+        </td>
+        <td colspan="2" style = align:right>
+            <a href="/board/modify/<%=read.idx%>">수정</a>
+        </td>
+    </tr>
+    <tr>
+        <th>번호</th>
+        <td colspan="3"><%=read.idx%></td>
+        <th>조회수</th>
+        <td colspan="3"><%=read.hit%></td>
+        <th>글쓴이</th>
+        <td colspan="3"><%=read.writer%></td>
+    </tr>
+    <tr>
+        <th>제목</th>
+        <td colspan="11"><%=read.title%></td>
+    </tr>
+    <tr>
+        <th>작성일</th>
+        <td colspan="5"><%=read.regdate%></td>
+        <th>수정일</th>
+        <td colspan="5"><%=read.moddate%></td>
+    </tr>
+    <tr>
+        <td colspan="12" height="400" ><%=read.content%></td>
+    </tr>
+
+    <tr>
+        <th colspan="12">댓글</th>
+    </tr>
+    <%
+        var cid;
+        var pp;
+    for(var i = 0; i<rowss.length; i++)
+    {
+        var r=rowss[i];
+            cid=r.idx;
+            pp=r.idx;
+        if(r.idx==r.pid){
+    %>
+    <tr>
+        <td colspan="5"><%=rowss[i].replyer%>
+            <br>
+            &nbsp;&nbsp;&nbsp;<%=rowss[i].rep_content%>
+        </td>
+        <td colspan="5">
+        <%=rowss[i].rep_moddate%>
+        </td>
+        <td>
+            <form action="/board/read/<%=read.idx%>" method="post" onsubmit="return confirm('덧글을 삭제하시겠습니까?')">
+                <input type="hidden" name="cid" value="<%=cid%>">
+                <input type="submit" value="삭제">
+            </form>
+        </td>
+    </tr>
+    <form method="post" action="/board/read/<%=read.idx%>" onsubmit="onWriteSubmit()">
+    <tr>
+        <th><input type="hidden" name="cid" id="cid" value="<%=cid%>" required/></th>
+        <th><input type="hidden" name="pp" id="pp" value="<%=pp%>" required/></th>
+        <th>작성자</th>
+        <td><input type="text" name="replyer" id="replyer" required/></td>
+        <th>내용</th>
+        <td colspan="8"><textarea name="rep_content" id="rep_content" required></textarea>
+            <input name="reply" type="submit" value="등록">
+    </tr>
+    </form>
+    <%
+            r=rowss[i];
+            for(var j=i+1;j<rowss.length;j++){
+                r=rowss[i];
+                var t=rowss[j];
+                if(r.idx==t.pp && t.idx!=t.pid){
+                    cid=t.idx;
+                    var k=0;
+                    while(t.pid!=rowss[k].idx){k=k+1;}
+                    r=rowss[k];
+    %>
+        <td colspan="5">&nbsp;&nbsp;ㄴ<%=t.replyer%>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;@<%=r.replyer%>&nbsp;<%=t.rep_content%>
+        </td>
+        <td colspan="5"><%=t.rep_moddate%></td>
+    <td>
+        <form action="/board/read/<%=read.idx%>" method="post" onsubmit="return confirm('덧글을 삭제하시겠습니까?')">
+            <input type="hidden" name="cid" value="<%=cid%>">
+            <input type="submit" value="삭제">
+        </form>
+    </td>
+        <form method="post" action="/board/read/<%=read.idx%>" onsubmit="onWriteSubmit()">
+    <tr>
+        <td><input type="hidden" name="cid" id="cid" value="<%=cid%>" required/></td>
+        <td><input type="hidden" name="pp" id="pp" value="<%=pp%>" required/></td>
+        <th>작성자</th>
+        <td><input type="text" name="replyer" id="replyer" required/></td>
+        <th>내용</th>
+        <td colspan="8"><textarea name="rep_content" id="rep_content" required></textarea>
+            <input name="reply" type="submit" value="등록">
+    </tr>
+    </form>
+        <%
+            }
+        }
+        }
+        }
+        cid=cnt[0].max+1;
+        pp=cid;
+        %>
+    <form name="form1" method="post" action="/board/read/<%=read.idx%>" onsubmit="onWriteSubmit()">
+        <tr>
+            <th><input type="hidden" name="cid" id="cid" value="<%=cid%>" required/></th>
+            <th><input type="hidden" name="pp" id="pp" value="<%=pp%>" required/></th>
+            <th>작성자</th>
+            <td><input type="text" name="replyer" id="replyer" required/></td>
+        </tr>
+        <tr>
+            <th>댓글 내용</th>
+            <td colspan="8"><textarea name="rep_content" id="rep_content" required></textarea>
+                <input name="reply" type="submit" value="등록">
+        </tr>
+    </form>
+</table>
+</body>
+</html>
