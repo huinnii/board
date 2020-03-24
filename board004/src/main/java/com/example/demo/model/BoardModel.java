@@ -15,4 +15,5 @@ public class BoardModel {
     private String password;
     private int hit;
     private char state;
+    private int bno;
 }

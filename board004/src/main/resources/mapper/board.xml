@@ -11,21 +11,34 @@
         <set>
             <if test="title !=null and title !=''">title=#{title},</if>
             <if test="writer !=null and writer !=''">writer=#{writer},</if>
-            content=#{content},password=#{password},
-            moddate=#{moddate}
+            content=#{content},password=#{password},moddate=#{moddate}
             where idx=#{idx}
         </set>
     </update>
     <delete id="deleteBoard">
         update board set state="N" where idx=#{idx}
     </delete>
+
+    <!-- (구) 목록 가져오기
     <select id="getBoard" resultType="com.example.demo.model.BoardModel">
         select * from board where state="Y" order by idx desc
     </select>
+    -->
     <select id="getDetail" parameterType="int" resultType="com.example.demo.model.BoardModel">
         select * from board where idx=#{idx} and state="Y" order by idx desc
     </select>
     <update id="hitBoard" parameterType="int">
         update board set hit=hit+1 where idx=#{idx}
     </update>
+    <!-- 총 게시글 갯수 출력 -->
+    <select id="countBoard" resultType="int">
+        select count(*) from board where state="Y"
+    </select>
+    <!-- 페이징 처리 후 게시글 조회 -->
+    <select id="selectBoard" resultType="com.example.demo.model.BoardModel">
+        select * from (select * from ( select idx,title,content,writer,moddate,hit,state,row_number() over( order by idx desc) as rnum, row_number() over (order by idx) bno from board where state="Y") A
+        where rnum between #{start} AND #{end} order by idx desc) mp
+        where state="Y" order by idx desc
+    </select>
+
 </mapper>

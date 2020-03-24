@@ -23,7 +23,7 @@ public class DataAccessConfig {
         return sessionFactoryBean.getObject();
     }
 
-    @Bean
+    @Bean  //DAO와 DB를 직접 연결, 종료할 필요 없게 해줌
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory){
         return new SqlSessionTemplate(sqlSessionFactory);
     }

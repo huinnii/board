@@ -2,18 +2,16 @@ package com.example.demo.controller;
 
 import com.example.demo.model.BoardModel;
 import com.example.demo.service.BoardService;
+import com.example.demo.utils.PagingVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 @Controller
 public class BoardController {
@@ -21,11 +19,26 @@ public class BoardController {
     @Autowired
     BoardService boardService;
 
-    @RequestMapping("/list")
-    public String list(Model model) {
-        List<BoardModel> board = boardService.printBoard();
+    @GetMapping("/list")
+    public String boardList(PagingVO vo, Model model, @RequestParam(value="nowPage",required=false)String nowPage,
+                            @RequestParam(value="cntPerPage",required=false)String cntPerPage){
 
-        model.addAttribute("boardList",board);
+        int total = boardService.countBoard();
+
+        if(nowPage==null && cntPerPage==null){
+            nowPage="1";
+            cntPerPage="5";
+        }
+        else if(nowPage==null){
+            nowPage="1";
+        }
+        else if(cntPerPage==null){
+            cntPerPage="5";
+        }
+        vo=new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+        model.addAttribute("paging",vo);
+
+        model.addAttribute("viewAll",boardService.selectBoard(vo));
 
         return "list";
     }
@@ -73,6 +86,7 @@ public class BoardController {
 
     @RequestMapping("/modifyBoard/{idx}")
     public String modify(@PathVariable int idx, Model model) throws Exception{
+
         BoardModel board = boardService.printDetail(idx);
 
         model.addAttribute("boardDetail",board);
