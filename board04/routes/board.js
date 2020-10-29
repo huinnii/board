@@ -14,7 +14,7 @@ var connection = mysql.createConnecthion({
     host: 'localhost', // DB가 위치한 IP주소
     port: 3306,          // DB와 연결할 포트번호
     user: 'root',        // 계정이름
-    password: 'Smdnlxm48667',    // 계정 비밀번호
+    password: '',    // 계정 비밀번호
     database: 'board04'    // 데이터베이스 이름
 });
 
